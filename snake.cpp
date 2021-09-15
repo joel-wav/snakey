@@ -22,7 +22,7 @@ class Arena
 
     Arena()
     {
-        length = 5;
+        length = 10;
         snakerep = 'O';
         for(int i = 0 ; i < length ; i++)
             snakey.push({1, i+1});
@@ -63,10 +63,19 @@ class Arena
         
         while(!temp_snakey.empty())
         {
+
             pair<int, int> xy = temp_snakey.front();
             temp_snakey.pop();
 
             int x = xy.first, y = xy.second;
+
+            //condition for hitting any of the boundaries
+            if (x <= 0 || y <= 0 || x >= size-1 || y >= 2*size-1)
+                play = false;
+
+            //condition for hitting itself
+            if (arena[x][y] == snakerep)
+                play = false;
 
             arena[x][y] = snakerep;
         }
@@ -119,13 +128,24 @@ int main()
     {
         if(_kbhit())
         {
-            switch (_getch()) 
+            char ch = _getch();
+            if (dir == 'R' || dir == 'L')
             {
-                case 'a': dir = 'L'; break;
-                case 'd': dir = 'R'; break;
-                case 'w': dir = 'U'; break;
-                case 's': dir = 'D' ; break;
-                case 'x': play = false; break;
+                if (ch == 'w')
+                    dir = 'U'; 
+                else if (ch == 's')
+                    dir = 'D';
+                else if (ch == 'x')
+                    play = false;
+            }   
+            else if (dir == 'U' || dir == 'D')
+            {
+                if (ch == 'd')
+                    dir = 'R'; 
+                else if (ch == 'a')
+                    dir = 'L';
+                else if (ch == 'x')
+                    play = false;
             }
         }
         
@@ -134,13 +154,13 @@ int main()
         A.setSnake();
         A.printAll();
 
-        //to stop the flickering of the screen
+        //better than using system("cls"), because it moves cursor to beginning of console
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
     }
     return 0;
 }
 
-
+//To Do: 
 
 
 
