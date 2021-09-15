@@ -15,7 +15,7 @@ class Arena
 
     int length, w, h, size, fx, fy;
     char snakerep, fruitrep;
-    queue<pair<int,int>> snakey;
+    queue<pair<int,int>> snakey, marker;
     vector<vector<char>> arena;
 
     public:
@@ -23,7 +23,7 @@ class Arena
     Arena()
     {
         //snake stuff
-        length = 10;
+        length = 1;
         snakerep = 'O';
         for(int i = 0 ; i < length ; i++)
             snakey.push({1, i+1});
@@ -98,6 +98,9 @@ class Arena
             if (arena[x][y] == fruitrep)
             {
                 setFruit();
+                //increase length of the snake 
+                length++;
+                marker.push({x,y});
             }
 
             arena[x][y] = snakerep;
@@ -119,7 +122,12 @@ class Arena
             newHead = {prevHead.first+1, prevHead.second};
 
         //pop the tail from the queue and add the new head
-        snakey.pop();
+        pair<int, int> tail = snakey.front();
+        if (tail == marker.front())
+            marker.pop();
+        else
+            snakey.pop();
+        
         snakey.push(newHead);
     }
 
