@@ -177,7 +177,7 @@ int main()
         A.setSnake();
         A.printAll();
 
-        //better than using system("cls"), because it moves cursor to beginning of console
+        //better than using system("cls"), because it moves cursor to beginning of console, stops flickering 
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
     }
     return 0;
