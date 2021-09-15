@@ -14,7 +14,7 @@ class Arena
     private: 
 
     int length, w, h, size, fx, fy;
-    char snakerep, fruitrep;
+    char snakerep, fruitrep, dir;
     queue<pair<int,int>> snakey, marker;
     vector<vector<char>> arena;
 
@@ -27,6 +27,7 @@ class Arena
         snakerep = 'O';
         for(int i = 0 ; i < length ; i++)
             snakey.push({1, i+1});
+        dir = 'R';
         
         //arena stuff
         size = 25;
@@ -143,19 +144,8 @@ class Arena
             cout<<endl;
         }
     }
-};
 
-int main()
-{
-    Arena A;
-
-    char dir = 'R';
-
-    A.setArena();
-    A.setSnake();
-    A.printAll();
-
-    while(play)
+    void getDirection()
     {
         if(_kbhit())
         {
@@ -179,13 +169,26 @@ int main()
                     play = false;
             }
         }
-        
-        A.setArena();
-        A.moveSnake(dir);
-        A.setSnake();
-        A.printAll();
+    }
 
-        //better than using system("cls"), because it moves cursor to beginning of console, stops flickering 
+    void playGame()
+    {
+        getDirection();
+        setArena();
+        moveSnake(dir);
+        setSnake();
+        printAll();
+    }
+};
+
+int main()
+{
+    Arena A;
+
+    while(play)
+    {
+        A.playGame();
+        //better than using system("cls"), because it moves cursor to beginning of console, flickering stops
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
     }
     return 0;
