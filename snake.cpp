@@ -8,6 +8,7 @@
 using namespace std;
 
 bool play = true;
+int score = 0;
 
 class Arena
 {
@@ -43,9 +44,9 @@ class Arena
 
     void setFruit()
     {
-        fx = 1 + (rand() % h);
-        fy = 1 + (rand() % w);
-
+        fx = 1 + (rand() % (h-2));
+        fy = 1 + (rand() % (w-2));
+        
         arena[fx][fy] = fruitrep;
     }
     
@@ -100,7 +101,7 @@ class Arena
             {
                 setFruit();
                 //increase length of the snake 
-                length++;
+                length++, score++;
                 marker.push({x,y});
             }
 
@@ -124,7 +125,7 @@ class Arena
 
         //pop the tail from the queue and add the new head
         pair<int, int> tail = snakey.front();
-        if (tail == marker.front())
+        if (!marker.empty() && tail == marker.front())
             marker.pop();
         else
             snakey.pop();
@@ -134,7 +135,7 @@ class Arena
 
     void printAll()
     {
-        //this function prints the board and the snake, basically everything in the matrix
+        //prints the matrix
         for(int i = 0 ; i < h ; i++)
         {
             for(int j = 0 ; j < w ; j++)
@@ -188,6 +189,7 @@ int main()
     while(play)
     {
         A.playGame();
+        cout<<" SCORE = "<<score<<endl;
         //better than using system("cls"), because it moves cursor to beginning of console, flickering stops
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
     }
